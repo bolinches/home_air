@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+
+import sys
+try:
+    raw_input      # Python 2
+    PYTHON3 = False
+except NameError:  # Python 3
+    raw_input = input
+    PYTHON3 = True
+
+if not PYTHON3:
+    sys.exit("This tool only works with Python 3\n")
+
+import argparse
+import socket
+import getpass
+from classes.home_air import SM011_detector
+
+def main(): 
+    my_detector = SM011_detector(
+        "/dev/ttyUSB0",
+        "DB IP/NAME",
+        "DB USER",
+        "DB PASSWD",
+        "DB NAME"
+    )
+    while True:
+        measurement = my_detector.read_value(print_value=True)
+        my_detector.write_DB(measurement)
+if __name__ == "__main__":
+    main()
